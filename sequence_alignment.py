@@ -20,15 +20,9 @@ Q_anc = 1  # + 5	    			# Number of ancilla qubits
 anc = Q_D + Q_T  # Ancilla qubit id
 total_qubits = Q_D + Q_T + Q_anc
 
-
 def QAM():
-    # print(qc.draw())
-    # print(qc.qasm())
-    # test = run_circuit(get_qc(), Q_A)
     qc = get_qc()
-    # output_state(qc)
     return qc
-
 
 def get_qc():
     qc = QuantumCircuit(total_qubits)
@@ -198,49 +192,18 @@ def run_circuit(qc, s):
     sorted_counts = dict(sorted(counts.items(), key=operator.itemgetter(1), reverse=True))
     test = {}
     for state in sorted_counts:
-        # print(state, '\t\t', sorted_counts[state])
         index_res = state[:4:-1]
         if index_res in test:
             test[index_res] = test[index_res] + sorted_counts[state]
         else:
             test[index_res] = sorted_counts[state]
 
-    # for k in test:
-    #    print("%s, probability:%s" % (k, str(test[k])))
-
-    # for k in sorted_counts:
-    #    print("%s, count:%f" % (k, sorted_counts[k]*1.0/shots))
     res = []
     # print("================This result on qiskit for qubits with noise==============================")
     test = sorted(test.items(), key=operator.itemgetter(1), reverse=True)
     for k in test:
-        # print("%s, probability:%s%s" % (k[0], str(round(k[1]*100.0/shots,2)), "%"))
         res.append("%s:%s" % (k[0], str(round(k[1] * 100.0 / shots, 2))))
-    # print("res_qiskit='%s'" % ",".join(res))
-    return res  # "res_qiskit='%s'" % ",".join(res)
-
-
-def output(qc, s):
-    qc.measure_all()
-    aa = Aer.get_backend('qasm_simulator')
-    job = execute(qc, aa, shots=1000)
-    result = job.result()
-    # print(result)
-    counts = result.get_counts(qc)
-    print('Running on local simulator')
-    print('State', '\t\tOccurance')
-
-    sorted_counts = dict(sorted(counts.items(), key=operator.itemgetter(1), reverse=True))
-    test = {}
-    for quantum_state in sorted_counts:
-        print(quantum_state, '\t\t', sorted_counts[quantum_state])
-        # a = quantum_state[6:9]
-        # print(a)
-        # if a not in test:
-        #    test[a] = sorted_counts[quantum_state]
-        # else:
-        #    test[a] = test[a] + sorted_counts[quantum_state]
-    # print(test)
+    return res
 
 
 def output_state(qc):
@@ -261,13 +224,11 @@ def output_state(qc):
         else:
             test[index_res] = val
     res = []
-    # print("================This result on qiskit for perfect qubits==============================")
+    # print("================This result on qiskit for statevector==============================")
     test = sorted(test.items(), key=operator.itemgetter(1), reverse=True)
     for k in test:
-        # print("%s, probability:%s%s" % (k[0], str(round(k[1]*100,2)), "%"))
         res.append("%s:%s" % (k[0], str(round(k[1], 5))))
-    # print("res_qiskit_perfect='%s'" % ",".join(res))
-    return res  # ",".join(res)
+    return res
 
 
 def test_mcx():
@@ -277,31 +238,6 @@ def test_mcx():
 
     qc.mcx([0, 1, 2, 3], 4)
     output(qc, 1)
-
-
-def get_output(res):
-    prob = 'prob'
-    test = {}
-    for k in res:
-        index_res = k[:4:-1]
-        if index_res in test:
-            test[index_res] += res[k][prob]
-        else:
-            test[index_res] = res[k][prob]
-
-    # print("================This result on QBee Simulator for perfect qubits==============================")
-    test = sorted(test.items(), key=operator.itemgetter(1), reverse=True)
-    count = 0
-    res = []
-    for k in test:
-        # print()
-        # print("%s, probility:%s" % (k, test[k]))
-        # print("%s, probability:%s%s" % (k[0], str(round(k[1]*100,2)), "%"))
-        count += k[1]
-        res.append("%s:%s" % (k[0], str(round(k[1], 5))))
-    # print("res_qbee = '%s'" % ",".join(res))
-    return res  # "res_qbee = '%s'" % ",".join(res)
-
 
 def decode_sequence(code):
     nucledite = ["A", "C", "G", "T"]
