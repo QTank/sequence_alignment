@@ -231,14 +231,6 @@ def output_state(qc):
     return res
 
 
-def test_mcx():
-    qc = QuantumCircuit(5)
-    for i in range(4):
-        qc.x(i)
-
-    qc.mcx([0, 1, 2, 3], 4)
-    output(qc, 1)
-
 def decode_sequence(code):
     nucledite = ["A", "C", "G", "T"]
     res = []
