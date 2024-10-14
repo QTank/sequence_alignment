@@ -6,4 +6,5 @@ Artira Sakar developed Quantum sequence alignment. The code only provided an exa
 Install Python3 and Qiskit
 
 Once the prerequisites are installed, then you can run the quantum sequence alignment by the following command,
+
 python3 sequence_alignment.py
