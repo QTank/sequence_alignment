@@ -3,7 +3,8 @@ Artira Sakar developed Quantum sequence alignment. The code only provided an exa
 
 
 ## Prerequisites: 
-- Python3 
+- Python3
+- numpy
 - Qiskit
 
 ## Run
