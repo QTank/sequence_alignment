@@ -10,7 +10,7 @@ N = 16
 w = "0332313022120110"  # Reference Genome: "ATTGTCTAGGCGACCA"
 nucledite = {"A": 0, "C": 1, "G": 2, "T": 3}
 M = 2  # Short Read size
-p = "32"  # Short Read: "AA"
+# p = "32"  # Short Read: "AA"
 A = 4
 Q_A = ceil(log2(A))  # Number of qubits to encode one character
 Q_D = Q_A * M  # Number of data qubits
@@ -23,13 +23,13 @@ def QAM():
     qc = get_qc()
     return qc
 
-def get_qc():
+def get_qc(short_read):
     qc = QuantumCircuit(total_qubits)
-    cir1(qc)
-    cir2(qc)
+    cir1(qc, short_read)
+    cir2(qc, short_read)
     cir3(qc)
     cir4(qc)
-    cir5(qc)
+    cir5(qc, short_read)
     cir4(qc)
     for i in range(3):
         cir3(qc)
@@ -50,7 +50,7 @@ def randStr(szA, sz):
     return
 
 
-def cir1(qc):
+def cir1(qc, p):
     for i in range(Q_T):
         qc.h(i)
     nc = [ci for ci in range(Q_T)]
@@ -91,7 +91,7 @@ def cir1(qc):
     return
 
 
-def cir2(qc):
+def cir2(qc, p):
     for i in range(M):
         w_a = format(int(p[i]), '0' + str(Q_A) + 'b')
         for j in range(Q_A):
@@ -655,7 +655,7 @@ def cir4(qc):
         qc.h(i)
 
 
-def cir5(qc):
+def cir5(qc, p):
     nc = [ci for ci in range(Q_D + Q_T - 1)]
     for i in range(N - M + 1):
         w_a = format(i, '0' + str(Q_T) + 'b')
@@ -780,15 +780,15 @@ def code_sequence(code):
 
 
 def sequence_alignment(p_input_code):
-    p = p_input_code
+    # p = p_input_code
     # print("=============Start search short read %s========" % p_input_code)
     start_time_qiskit = time.time()
-    test = run_circuit(get_qc(), Q_A)
-    executing_qiskit = time.time() - start_time_qiskit
+    test = run_circuit(get_qc(p_input_code), Q_A)
+    executing_qiskit = round(time.time() - start_time_qiskit, 2)
 
     start_time_qiskit_statevector = time.time()
-    res_qiskit = output_state(get_qc())
-    time_qiskit = time.time() - start_time_qiskit_statevector
+    res_qiskit = output_state(get_qc(p_input_code))
+    time_qiskit = round(time.time() - start_time_qiskit_statevector, 2)
 
     return [test, res_qiskit], [executing_qiskit, time_qiskit]
 

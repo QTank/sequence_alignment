@@ -11,3 +11,7 @@ Artira Sakar developed Quantum sequence alignment. The code only provided an exa
 Once the prerequisites are installed, then you can run the quantum sequence alignment by the following command:
 
 python3 sequence_alignment.py
+
+When you want to plot a figure, you can run tge following command and input the short_read that you want
+
+python3 plot_dna_alignment.py
