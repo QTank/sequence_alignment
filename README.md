@@ -12,6 +12,6 @@ Once the prerequisites are installed, then you can run the quantum sequence alig
 
 python3 sequence_alignment.py
 
-When you want to plot a figure, you can run tge following command and input the short_read that you want
+When you want to plot a figure, you can run the following command and input the short_read that you want
 
 python3 plot_dna_alignment.py
